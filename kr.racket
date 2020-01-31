@@ -1,4 +1,8 @@
-#lang racket
+# Name: Fernanda Rodriguez 
+# Pollard's 'Rho' algorithm implemented in Racket. Required
+# reworking of alg since originally takes advantage of 
+# 'goto's not avaliable in scheme dialects (ie: racket, gauche)
+
 (require math/number-theory)
 (require math/base)
 (require racket/cmdline)
