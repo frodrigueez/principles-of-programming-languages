@@ -1,0 +1,63 @@
+#lang racket
+(require math/number-theory)
+(require math/base)
+(require racket/cmdline)
+(require control)
+
+(define openmessage "Attempting to factor N = ")
+(define openmessage2 " with Pollard rho algorithm from Knuth's Algorithm B in section 4.5.4 of TAOCP")
+(define factors "Factors are:")
+
+(define (B2 n x x_prime k l g)
+	(if (prime? n)
+		(begin 
+			(display n)
+			(printf "\n")
+			(exit 1))
+		(B3 n x x_prime k l g))
+	)
+
+(define (B3 n x x_prime k l g)
+	(set! g (gcd (- x_prime x) n))
+	(cond 
+		[(= g 1) (B4 n x x_prime k l g)]
+		[(= g n) (display "failed")
+			 (exit 1)]
+	)
+	(display g)
+	(printf "\n")	
+	(set! n (quotient n g))
+	(set! x (modulo x n))
+	(set! x_prime (modulo x_prime n))
+	(B2 n x x_prime k l g)
+	)
+
+(define (B4 n x x_prime k l g)
+	(set! k (sub1 k))
+	(cond
+		[(= k 0) (set! x_prime (abs x))
+			 (set! l (* 2 l))
+			 (set! k (abs l)) ])
+	(set! x (modulo (add1(* x x)) n ))
+	(B3 n x x_prime k l g)
+	)
+
+
+
+;B1: Initalization
+(define n (string->number (vector-ref(current-command-line-arguments) 0)))
+(define x 5)
+(define x_prime 2)
+(define k 1)
+(define l 1)
+(define g 1)
+
+(display (string-append openmessage (vector-ref(current-command-line-arguments) 0) openmessage2))
+(printf "\n")
+(display factors)
+(printf "\n")
+(B2 n x x_prime k l g)
+
+
+
+

@@ -1,0 +1,62 @@
+#!/usr/local/bin/gosh
+(use srfi-13)
+(use math.prime)
+
+(define (B2 n x x_prime k l g) 
+	(if (bpsw-prime? n)
+		(begin
+			(print n)
+			(exit 1))
+		(B3 n x x_prime k l g))
+	)
+
+(define (B3 n x x_prime k l g)
+	(set! g (gcd (- x_prime x) n))
+	(cond 
+		[(eqv? g 1) (B4 n x x_prime k l g)]
+		[(eqv? g n) (print "failed")
+			    (exit 1)])
+	(print g)
+	(set! n (quotient n g))
+	(set! x (modulo x n))
+	(set! x_prime (modulo x_prime n))
+	(B2 n x x_prime k l g)
+	)
+
+(define (B4 n x x_prime k l g)
+	(set! k (- k 1))
+	(cond 
+		[(eqv? k 0) (set! x_prime (abs x))
+			    (set! l (* 2 l))
+			    (set! k (abs l))])
+	(set! x (modulo (+ 1 (* x x)) n ))
+	(B3 n x x_prime k l g)
+	)
+
+(define (main args)
+	(define open1 "Attempting to factor N = ")
+	(define open2 " with Pollard rho algorithm from Knuth's Algorithm B in section 4.5.4 of TAOCP")	
+	(define factors "Factors are:")	
+	; B1. initalization
+	(define n 1)
+	(define x 5)
+	(define x_prime 2)
+	(define k 1)
+	(define l 1)
+	(define g 1) 
+	(define N "")
+	(define Nlength 0)
+
+	(set! N (x->string(cdr args)))
+	(set! Nlength (- (string-length N) 1))
+	(set! N (string->number (substring N 1 Nlength)))
+	(set! n (abs N))
+
+
+	(print (string-append open1 (number->string n) open2) )
+	(print factors)
+	(B2 n x x_prime k l g)
+
+	;(display (string-append open1 (x->string n) open2))
+0)
+
