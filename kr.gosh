@@ -1,3 +1,6 @@
+: Name: Fernanda Rodriguez 
+; Description: Pollard's 'Rho' implementation in Gauche.
+
 #!/usr/local/bin/gosh
 (use srfi-13)
 (use math.prime)
@@ -57,6 +60,5 @@
 	(print factors)
 	(B2 n x x_prime k l g)
 
-	;(display (string-append open1 (x->string n) open2))
 0)
 
